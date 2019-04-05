@@ -22,7 +22,9 @@ class Game {
   static setupWastePile(allCards) {
     const wastePile = [];
     for (let pileCount = 1; pileCount <= 7; pileCount++) {
-      wastePile.push(Game.getRandomCards(allCards, pileCount));
+      const pile = Game.getRandomCards(allCards, pileCount);
+      pile[pile.length - 1].display = true;
+      wastePile.push(pile);
     }
     return wastePile;
   }

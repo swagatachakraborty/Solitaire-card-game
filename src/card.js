@@ -5,13 +5,21 @@ class Card extends Component {
     super(props);
     this.suit = props.suit;
     this.value = props.value;
-    this.colorClass = props.colorClass;
-    this.key = this.suit + '-' + this.value;
+    this.colorClass = props.display ? props.colorClass : 'face-down';
+    this.onDrag = props.onDrag;
+    this.id = this.suit + '-' + this.value;
+    this.wastePileIndex = props.wastePileIndex;
   }
 
   render() {
+    this.wastePileIndex = this.props.wastePileIndex;
     return (
-      <div className={`card ${this.colorClass}`}>
+      <div
+        id={this.id}
+        className={`card ${this.colorClass}`}
+        draggable={true}
+        onDragStart={this.onDrag}
+      >
         <div className="card-header"> {this.value} </div>
         <div
           className="card-center"
