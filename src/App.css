@@ -5,6 +5,70 @@
     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+main {
+  height: 100%;
+  width: 98%;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.foundation-and-deck-section {
+  height: 25%;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.deck-section,
+.foundation-section {
+  width: 25%;
+
+  display: flex;
+  justify-content: space-around;
+}
+
+.foundation-section {
+  width: 50%;
+}
+
+.face-down-deck,
+.driven-card,
+.foundation {
+  width: 79px;
+  height: 123px;
+  padding: 7px;
+
+  background-color: aliceblue;
+  border: 0.5px dashed gray;
+  border-radius: 6%;
+}
+
+.face-down-deck {
+  background-color: beige;
+  border: 1px solid black;
+}
+
+.separator {
+  height: 40px;
+  width: 100%;
+}
+
+.waste-pile-section {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+}
+
+.waste-pile {
+  height: 400px;
+  width: 100px;
+  padding: 5px;
+}
+
 .card {
   width: 79px;
   height: 123px;
@@ -18,6 +82,10 @@
 
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.red-card {
+  color: rgb(191, 31, 31);
 }
 
 .card-header {

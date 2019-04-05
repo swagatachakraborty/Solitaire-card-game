@@ -4,12 +4,13 @@ const HEART = '&#9829;';
 const DIAMOND = '&#9830;';
 
 const createCard = function(suit, value) {
-  return { value, suit };
+  let color = 'black-card';
+  if (suit === HEART || suit === DIAMOND) color = 'red-card';
+  return { value, suit, color };
 };
 
 const createSuitDeck = function(suit) {
   const deck = ['A', 'K', 'Q', 'J'].map(createCard.bind(null, suit));
-
   for (let value = 2; value <= 10; value++) {
     deck.push(createCard(suit, value));
   }
