@@ -5,14 +5,20 @@ class Card extends Component {
     super(props);
     this.suit = props.suit;
     this.value = props.value;
+    this.index = props.cardIndex;
     this.colorClass = props.display ? props.colorClass : 'face-down';
     this.onDrag = props.onDrag;
-    this.id = this.suit + '-' + this.value;
-    this.wastePileIndex = props.wastePileIndex;
+    this.id =
+      this.suit +
+      '-' +
+      this.value +
+      '-' +
+      this.index +
+      '-' +
+      props.wastePileIndex;
   }
 
   render() {
-    this.wastePileIndex = this.props.wastePileIndex;
     return (
       <div
         id={this.id}
@@ -20,12 +26,19 @@ class Card extends Component {
         draggable={true}
         onDragStart={this.onDrag}
       >
-        <div className="card-header"> {this.value} </div>
+        <div className="card-header" id={this.id}>
+          {this.value}
+        </div>
+
         <div
           className="card-center"
+          id={this.id}
           dangerouslySetInnerHTML={{ __html: `${this.suit}` }}
         />
-        <div className="card-footer">{this.value}</div>
+
+        <div className="card-footer" id={this.id}>
+          {this.value}
+        </div>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Game from './game';
 import Card from './card';
+import clone from './util';
 import './App.css';
 
 const game = new Game();
@@ -9,7 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      wastePile: []
+      wastePiles: game.getWastePiles(),
+      drawnCards: []
     };
     this.drop = this.drop.bind(this);
     this.addCardToPile = this.addCardToPile.bind(this);
@@ -17,12 +19,8 @@ class App extends Component {
     this.createCards = this.createCards.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({ wastePile: game.getWastePiles().map(this.createCards) });
-  }
-
   createCards(cards, wastePileIndex) {
-    return cards.map(cardDetail => {
+    return cards.map((cardDetail, index) => {
       return (
         <Card
           suit={cardDetail.suit}
@@ -32,9 +30,25 @@ class App extends Component {
           key={cardDetail.key}
           onDrag={this.removeCardFromPile}
           wastePileIndex={wastePileIndex}
+          cardIndex={index}
         />
       );
     });
+  }
+
+  createWastePileView(pileIndex) {
+    return (
+      <div className="waste-pile-section">
+        <div
+          className="waste-pile"
+          id={pileIndex}
+          onDragOver={this.addCardToPile}
+          onDrop={this.drop}
+        >
+          {this.createCards(this.state.wastePiles[pileIndex], pileIndex)}
+        </div>
+      </div>
+    );
   }
 
   removeCardFromPile(event) {
@@ -47,22 +61,19 @@ class App extends Component {
 
   drop(event) {
     event.preventDefault();
-    const card = event.dataTransfer.getData('card');
-    event.target.appendChild(document.getElementById(card));
-  }
+    const sourceCardId = event.dataTransfer.getData('card');
+    const [, , sourceCardIndex, sourcePile] = sourceCardId.split('-');
+    const sourceCard = this.state.wastePiles[sourcePile][sourceCardIndex];
+    if (sourceCard.display === false) return;
 
-  createWastePileView(pileIndex) {
-    return (
-      <div className="waste-pile-section">
-        <div
-          className="waste-pile"
-          onDragOver={this.addCardToPile}
-          onDrop={this.drop}
-        >
-          {this.state.wastePile[pileIndex]}
-        </div>
-      </div>
-    );
+    const destinationCardId = event.target.id;
+    const destinationPile = destinationCardId.split('-').pop();
+
+    this.setState(state => {
+      const movedCards = state.wastePiles[sourcePile].splice(sourceCardIndex);
+      movedCards.forEach(card => state.wastePiles[destinationPile].push(card));
+      return clone(state.wastePiles);
+    });
   }
 
   render() {
@@ -71,7 +82,7 @@ class App extends Component {
         <div className="foundation-and-deck-section">
           <div className="deck-section">
             <div className="face-down-deck" />
-            <div className="driven-card" />
+            <div className="driven-card-section">{this.state.drawnCards}</div>
           </div>
 
           <div className="foundation-section">
