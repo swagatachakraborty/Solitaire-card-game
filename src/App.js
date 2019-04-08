@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Game from './game';
 import Card from './card';
-import clone from './util';
 import './App.css';
 
 const game = new Game();
@@ -11,29 +10,38 @@ class App extends Component {
     super(props);
     this.state = {
       wastePiles: game.getWastePiles(),
-      drawnCards: []
+      drawnCards: [],
+      lastDrawnCard: [],
+      faceDownDeck: game.getFeceDownDeck()
     };
     this.drop = this.drop.bind(this);
     this.addCardToPile = this.addCardToPile.bind(this);
     this.removeCardFromPile = this.removeCardFromPile.bind(this);
-    this.createCards = this.createCards.bind(this);
+    this.createCardsView = this.createCardsView.bind(this);
+    this.drawCard = this.drawCard.bind(this);
   }
 
-  createCards(cards, wastePileIndex) {
-    return cards.map((cardDetail, index) => {
-      return (
-        <Card
-          suit={cardDetail.suit}
-          value={cardDetail.value}
-          colorClass={cardDetail.color}
-          display={cardDetail.display}
-          key={cardDetail.key}
-          onDrag={this.removeCardFromPile}
-          wastePileIndex={wastePileIndex}
-          cardIndex={index}
-        />
-      );
-    });
+  createCard(cardDetail, index, wastePileIndex) {
+    return (
+      <Card
+        suit={cardDetail.suit}
+        value={cardDetail.value}
+        colorClass={cardDetail.color}
+        display={cardDetail.display}
+        key={cardDetail.key}
+        onDrag={this.removeCardFromPile}
+        wastePileIndex={wastePileIndex}
+        cardIndex={index}
+      />
+    );
+  }
+
+  createCardsView(cards, wastePileIndex) {
+    if (cards.length === 0) return;
+    cards[cards.length - 1].display = true;
+    return cards.map((card, index) =>
+      this.createCard(card, index, wastePileIndex)
+    );
   }
 
   createWastePileView(pileIndex) {
@@ -45,10 +53,29 @@ class App extends Component {
           onDragOver={this.addCardToPile}
           onDrop={this.drop}
         >
-          {this.createCards(this.state.wastePiles[pileIndex], pileIndex)}
+          {this.createCardsView(this.state.wastePiles[pileIndex], pileIndex)}
         </div>
       </div>
     );
+  }
+
+  drawCard() {
+    if (this.state.faceDownDeck.length > 0) {
+      this.setState(state => {
+        state.lastDrawnCard = [state.faceDownDeck.pop()];
+        state.drawnCards.push(state.lastDrawnCard[0]);
+        return state;
+      });
+
+      return;
+    }
+
+    this.setState(state => {
+      state.lastDrawnCard = [];
+      state.faceDownDeck = state.drawnCards.slice();
+      state.drawnCards = [];
+      return state;
+    });
   }
 
   removeCardFromPile(event) {
@@ -59,21 +86,43 @@ class App extends Component {
     event.preventDefault();
   }
 
+  handleDragFromDeckToWastePiles(destinationPile) {
+    this.setState(state => {
+      destinationPile.push(state.drawnCards.pop());
+      state.lastDrawnCard.pop();
+      if (state.drawnCards.length > 0) {
+        state.lastDrawnCard = [state.drawnCards[0]];
+      }
+      return state;
+    });
+  }
+
+  handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex) {
+    const sourceCard = sourcePile[sourceCardIndex];
+    if (sourceCard.display === false) return;
+
+    this.setState(state => {
+      const movedCards = sourcePile.splice(sourceCardIndex);
+      movedCards.forEach(card => destinationPile.push(card));
+      return state;
+    });
+  }
+
   drop(event) {
     event.preventDefault();
     const sourceCardId = event.dataTransfer.getData('card');
-    const [, , sourceCardIndex, sourcePile] = sourceCardId.split('-');
-    const sourceCard = this.state.wastePiles[sourcePile][sourceCardIndex];
-    if (sourceCard.display === false) return;
-
+    const [, , sourceCardIndex, sourcePileIndex] = sourceCardId.split('-');
     const destinationCardId = event.target.id;
-    const destinationPile = destinationCardId.split('-').pop();
+    const destinationPileIndex = destinationCardId.split('-').pop();
+    const sourcePile = this.state.wastePiles[sourcePileIndex];
+    const destinationPile = this.state.wastePiles[destinationPileIndex];
 
-    this.setState(state => {
-      const movedCards = state.wastePiles[sourcePile].splice(sourceCardIndex);
-      movedCards.forEach(card => state.wastePiles[destinationPile].push(card));
-      return clone(state.wastePiles);
-    });
+    if (isNaN(parseInt(sourcePileIndex))) {
+      this.handleDragFromDeckToWastePiles(destinationPile);
+      return;
+    }
+
+    this.handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex);
   }
 
   render() {
@@ -81,8 +130,10 @@ class App extends Component {
       <main>
         <div className="foundation-and-deck-section">
           <div className="deck-section">
-            <div className="face-down-deck" />
-            <div className="driven-card-section">{this.state.drawnCards}</div>
+            <div className="face-down-deck" onClick={this.drawCard} />
+            <div className="drawn-card-section">
+              {this.createCardsView(this.state.lastDrawnCard)}
+            </div>
           </div>
 
           <div className="foundation-section">

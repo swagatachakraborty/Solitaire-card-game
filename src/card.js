@@ -6,7 +6,6 @@ class Card extends Component {
     this.suit = props.suit;
     this.value = props.value;
     this.index = props.cardIndex;
-    this.colorClass = props.display ? props.colorClass : 'face-down';
     this.onDrag = props.onDrag;
     this.id =
       this.suit +
@@ -18,11 +17,15 @@ class Card extends Component {
       props.wastePileIndex;
   }
 
+  getColorClass(props) {
+    return props.display ? props.colorClass : 'face-down';
+  }
+
   render() {
     return (
       <div
         id={this.id}
-        className={`card ${this.colorClass}`}
+        className={`card ${this.getColorClass(this.props)}`}
         draggable={true}
         onDragStart={this.onDrag}
       >

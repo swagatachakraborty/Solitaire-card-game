@@ -35,7 +35,7 @@ main {
 }
 
 .face-down-deck,
-.driven-card-section,
+.drawn-card-section,
 .foundation {
   width: 79px;
   height: 123px;
@@ -80,6 +80,7 @@ main {
   border-radius: 6%;
   padding: 5px;
   margin-bottom: -108px;
+  position: relative;
 
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
     'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
