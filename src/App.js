@@ -8,20 +8,24 @@ const game = new Game();
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       wastePiles: game.getWastePiles(),
       drawnCards: [],
       lastDrawnCard: [],
+      foundations: [[], [], [], []],
       faceDownDeck: game.getFeceDownDeck()
     };
+
     this.drop = this.drop.bind(this);
     this.addCardToPile = this.addCardToPile.bind(this);
     this.removeCardFromPile = this.removeCardFromPile.bind(this);
     this.createCardsView = this.createCardsView.bind(this);
     this.drawCard = this.drawCard.bind(this);
+    this.createFoundationView = this.createFoundationView.bind(this);
   }
 
-  createCard(cardDetail, index, wastePileIndex) {
+  createCard(cardDetail, index, wastePileIndex = NaN) {
     return (
       <Card
         suit={cardDetail.suit}
@@ -59,21 +63,37 @@ class App extends Component {
     );
   }
 
-  drawCard() {
-    if (this.state.faceDownDeck.length > 0) {
-      this.setState(state => {
-        state.lastDrawnCard = [state.faceDownDeck.pop()];
-        state.drawnCards.push(state.lastDrawnCard[0]);
-        return state;
-      });
+  createFoundationView(foundationIndex) {
+    return (
+      <div
+        className="foundation"
+        id={`foundation-${foundationIndex}`}
+        onDragOver={this.addCardToPile}
+        onDrop={this.drop}
+      >
+        {this.createCardsView(this.state.foundations[foundationIndex])}
+      </div>
+    );
+  }
 
-      return;
-    }
-
+  resetDeck() {
     this.setState(state => {
       state.lastDrawnCard = [];
       state.faceDownDeck = state.drawnCards.slice();
       state.drawnCards = [];
+      return state;
+    });
+  }
+
+  drawCard() {
+    if (this.state.faceDownDeck.length === 0) {
+      this.resetDeck();
+      return;
+    }
+
+    this.setState(state => {
+      state.lastDrawnCard = [state.faceDownDeck.pop()];
+      state.drawnCards.push(state.lastDrawnCard[0]);
       return state;
     });
   }
@@ -86,23 +106,41 @@ class App extends Component {
     event.preventDefault();
   }
 
-  handleDragFromDeckToWastePiles(destinationPile) {
+  handleDragFromDeckToPile(destinationPile) {
     this.setState(state => {
       destinationPile.push(state.drawnCards.pop());
       state.lastDrawnCard.pop();
       if (state.drawnCards.length > 0) {
-        state.lastDrawnCard = [state.drawnCards[0]];
+        state.lastDrawnCard = state.drawnCards.slice(-1);
       }
       return state;
     });
   }
 
-  handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex) {
-    const sourceCard = sourcePile[sourceCardIndex];
-    if (sourceCard.display === false) return;
+  handleDragFromFaceDownDeck(destinationPile, destinationId) {
+    if (!/foundation/.test(destinationId)) {
+      this.handleDragFromDeckToPile(destinationPile);
+      return;
+    }
 
+    const foundationIndex = destinationId.split('-').pop();
+    this.handleDragFromDeckToPile(this.state.foundations[foundationIndex]);
+  }
+
+  handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex) {
     this.setState(state => {
       const movedCards = sourcePile.splice(sourceCardIndex);
+      movedCards.forEach(card => destinationPile.push(card));
+      return state;
+    });
+  }
+
+  handleDragFromPileToFoundation(foundationId, sourcePile, sourceCardIndex) {
+    const foundationIndex = foundationId.split('-').pop();
+    const destinationPile = this.state.foundations[foundationIndex];
+    this.setState(state => {
+      const movedCards = sourcePile.splice(sourceCardIndex);
+      console.log(movedCards);
       movedCards.forEach(card => destinationPile.push(card));
       return state;
     });
@@ -112,15 +150,18 @@ class App extends Component {
     event.preventDefault();
     const sourceCardId = event.dataTransfer.getData('card');
     const [, , sourceCardIndex, sourcePileIndex] = sourceCardId.split('-');
-    const destinationCardId = event.target.id;
-    const destinationPileIndex = destinationCardId.split('-').pop();
+    const destinationId = event.target.id;
+    const destinationPileIndex = destinationId.split('-').pop();
     const sourcePile = this.state.wastePiles[sourcePileIndex];
     const destinationPile = this.state.wastePiles[destinationPileIndex];
 
-    if (isNaN(parseInt(sourcePileIndex))) {
-      this.handleDragFromDeckToWastePiles(destinationPile);
+    if (isNaN(sourcePileIndex)) {
+      this.handleDragFromFaceDownDeck(destinationPile, destinationId);
       return;
     }
+
+    const sourceCard = sourcePile[sourceCardIndex];
+    if (sourceCard.display === false) return;
 
     this.handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex);
   }
@@ -137,10 +178,10 @@ class App extends Component {
           </div>
 
           <div className="foundation-section">
-            <div className="foundation" />
-            <div className="foundation" />
-            <div className="foundation" />
-            <div className="foundation" />
+            {this.createFoundationView(0)}
+            {this.createFoundationView(1)}
+            {this.createFoundationView(2)}
+            {this.createFoundationView(3)}
           </div>
         </div>
 
