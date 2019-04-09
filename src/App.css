@@ -24,14 +24,8 @@ main {
 
 .deck-section,
 .foundation-section {
-  width: 25%;
-
   display: flex;
   justify-content: space-around;
-}
-
-.foundation-section {
-  width: 50%;
 }
 
 .face-down-deck,
@@ -131,4 +125,13 @@ main {
 .card-footer {
   font-size: 20px;
   text-align: right;
+}
+
+.end-game {
+  font-family: inherit;
+  text-align: center;
+}
+
+.btn {
+  border-bottom: 1px solid rgb(95, 33, 33);
 }

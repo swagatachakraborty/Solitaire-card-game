@@ -11,18 +11,22 @@ class App extends Component {
     super(props);
 
     this.state = {
+      hasGameEnded: false,
       wastePiles: deck.getWastePiles(),
       drawnCards: [],
       foundations: [[], [], [], []],
       faceDownDeck: deck.getFeceDownDeck()
     };
 
+    this.timer = 0;
     this.drop = this.drop.bind(this);
     this.addCardToPile = this.addCardToPile.bind(this);
     this.removeCardFromPile = this.removeCardFromPile.bind(this);
     this.createCardsView = this.createCardsView.bind(this);
     this.drawCard = this.drawCard.bind(this);
     this.createFoundationView = this.createFoundationView.bind(this);
+
+    this.startGame();
   }
 
   createCard(cardDetail, index, pileIndex) {
@@ -144,7 +148,39 @@ class App extends Component {
     if (/f/.test(pileIndex)) return this.state.foundations[pileIndex[1]];
   }
 
+  startGame() {
+    const timerId = setInterval(() => {
+      this.timer++;
+
+      if (this.hasGameEnd()) {
+        clearInterval(timerId);
+        this.setState({ hasGameEnded: true });
+      }
+    }, 1000);
+  }
+
+  hasGameEnd() {
+    return this.state.foundations.every(foundation => foundation.length === 13);
+  }
+
   render() {
+    if (this.state.hasGameEnded) {
+      return (
+        <main>
+          <div className="end-game">
+            <h1>Congratulations !!!</h1>
+            <p>You took {this.timer / 60} minutes to finish the game.</p>
+            <p>Wanna play again ?</p>
+            <h3>
+              <a href="#" className="btn">
+                Play
+              </a>
+            </h3>
+          </div>
+        </main>
+      );
+    }
+
     return (
       <main>
         <div className="foundation-and-deck-section">
@@ -166,13 +202,13 @@ class App extends Component {
         <div className="separator" />
 
         <div className="waste-pile-section">
-          <div className='place-holder'>{this.createWastePileView(0)}</div>
-          <div className='place-holder'>{this.createWastePileView(1)}</div>
-          <div className='place-holder'>{this.createWastePileView(2)}</div>
-          <div className='place-holder'>{this.createWastePileView(3)}</div>
-          <div className='place-holder'>{this.createWastePileView(4)}</div>
-          <div className='place-holder'>{this.createWastePileView(5)}</div>
-          <div className='place-holder'>{this.createWastePileView(6)}</div>
+          <div className="place-holder">{this.createWastePileView(0)}</div>
+          <div className="place-holder">{this.createWastePileView(1)}</div>
+          <div className="place-holder">{this.createWastePileView(2)}</div>
+          <div className="place-holder">{this.createWastePileView(3)}</div>
+          <div className="place-holder">{this.createWastePileView(4)}</div>
+          <div className="place-holder">{this.createWastePileView(5)}</div>
+          <div className="place-holder">{this.createWastePileView(6)}</div>
         </div>
       </main>
     );
