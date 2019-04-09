@@ -24,20 +24,26 @@ main {
 
 .deck-section,
 .foundation-section {
+  width: 20%;
   display: flex;
   justify-content: space-around;
+}
+
+.foundation-section {
+  width: 50%;
 }
 
 .face-down-deck,
 .drawn-card-section,
 .foundation,
 .place-holder {
-  width: 79px;
-  height: 123px;
+  width: 90px;
+  height: 135px;
   padding: 7px;
 
   background-color: aliceblue;
   border: 0.5px dashed gray;
+  padding: 0px;
   border-radius: 6%;
 }
 
