@@ -21,6 +21,32 @@ class Card extends Component {
     return class1 + ' ' + class2;
   }
 
+  getCardHeaderView() {
+    return (
+      <div className="card-header" id={this.id}>
+        {this.value}
+      </div>
+    );
+  }
+
+  getCardCenterView() {
+    return (
+      <div
+        className="card-center"
+        id={this.id}
+        dangerouslySetInnerHTML={{ __html: `${this.suit}` }}
+      />
+    );
+  }
+
+  getCardFooterView() {
+    return (
+      <div className="card-footer" id={this.id}>
+        {this.value}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div
@@ -29,19 +55,9 @@ class Card extends Component {
         draggable={true}
         onDragStart={this.onDrag}
       >
-        <div className="card-header" id={this.id}>
-          {this.value}
-        </div>
-
-        <div
-          className="card-center"
-          id={this.id}
-          dangerouslySetInnerHTML={{ __html: `${this.suit}` }}
-        />
-
-        <div className="card-footer" id={this.id}>
-          {this.value}
-        </div>
+        {this.getCardHeaderView()}
+        {this.getCardCenterView()}
+        {this.getCardFooterView()}
       </div>
     );
   }

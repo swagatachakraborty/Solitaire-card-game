@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import Game from './game';
+import Deck from './deck';
 import Card from './card';
 import './App.css';
 
-const game = new Game();
+const deck = new Deck();
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      wastePiles: game.getWastePiles(),
+      wastePiles: deck.getWastePiles(),
       drawnCards: [],
       foundations: [[], [], [], []],
-      faceDownDeck: game.getFeceDownDeck()
+      faceDownDeck: deck.getFeceDownDeck()
     };
 
     this.drop = this.drop.bind(this);
@@ -121,6 +121,9 @@ class App extends Component {
 
     const sourcePile = this.getPileByIndex(sourcePileIndex);
     const destinationPile = this.getPileByIndex(destinationPileIndex);
+
+    const sourceCard = sourcePile[sourceCardIndex];
+    if (sourceCard.display === false) return;
 
     this.handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex);
   }
