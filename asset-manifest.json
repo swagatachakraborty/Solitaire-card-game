@@ -1,5 +1,5 @@
 {
-  "main.css": "/Solitaire-card-game/static/css/main.d6be7d05.chunk.css",
+  "main.css": "/Solitaire-card-game/static/css/main.42cb7beb.chunk.css",
   "main.js": "/Solitaire-card-game/static/js/main.512cdd6d.chunk.js",
   "main.js.map": "/Solitaire-card-game/static/js/main.512cdd6d.chunk.js.map",
   "runtime~main.js": "/Solitaire-card-game/static/js/runtime~main.335b2b13.js",
@@ -7,7 +7,7 @@
   "static/js/2.409743f3.chunk.js": "/Solitaire-card-game/static/js/2.409743f3.chunk.js",
   "static/js/2.409743f3.chunk.js.map": "/Solitaire-card-game/static/js/2.409743f3.chunk.js.map",
   "index.html": "/Solitaire-card-game/index.html",
-  "precache-manifest.10c8af7441a3f0a80c3380dd510079e8.js": "/Solitaire-card-game/precache-manifest.10c8af7441a3f0a80c3380dd510079e8.js",
+  "precache-manifest.45dfa03994ca39d139f1e2cfab1226bd.js": "/Solitaire-card-game/precache-manifest.45dfa03994ca39d139f1e2cfab1226bd.js",
   "service-worker.js": "/Solitaire-card-game/service-worker.js",
-  "static/css/main.d6be7d05.chunk.css.map": "/Solitaire-card-game/static/css/main.d6be7d05.chunk.css.map"
+  "static/css/main.42cb7beb.chunk.css.map": "/Solitaire-card-game/static/css/main.42cb7beb.chunk.css.map"
 }
