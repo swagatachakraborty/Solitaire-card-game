@@ -172,8 +172,11 @@ class App extends Component {
             <p>You took {this.timer / 60} minutes to finish the game.</p>
             <p>Wanna play again ?</p>
             <h3>
-              <a href="#" className="btn">
-                Play
+              <a
+                href="https://swagatachakraborty.github.io/Solitaire-card-game/"
+                className="btn"
+              >
+                PLAY
               </a>
             </h3>
           </div>
