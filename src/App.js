@@ -12,7 +12,6 @@ class App extends Component {
     this.state = {
       wastePiles: game.getWastePiles(),
       drawnCards: [],
-      lastDrawnCard: [],
       foundations: [[], [], [], []],
       faceDownDeck: game.getFeceDownDeck()
     };
@@ -79,7 +78,6 @@ class App extends Component {
 
   refillDeck() {
     this.setState(state => {
-      state.lastDrawnCard = [];
       state.faceDownDeck = state.drawnCards.slice();
       state.drawnCards = [];
       return state;
@@ -93,8 +91,7 @@ class App extends Component {
     }
 
     this.setState(state => {
-      state.lastDrawnCard = [state.faceDownDeck.pop()];
-      state.drawnCards.push(state.lastDrawnCard[0]);
+      state.drawnCards.push(state.faceDownDeck.pop());
       return state;
     });
   }
@@ -110,11 +107,6 @@ class App extends Component {
   handleDragFromDeckToPile(destinationPile) {
     this.setState(state => {
       destinationPile.push(state.drawnCards.pop());
-      state.lastDrawnCard.pop();
-
-      if (state.drawnCards.length > 0) {
-        state.lastDrawnCard = state.drawnCards.slice(-1);
-      }
       return state;
     });
   }
@@ -181,7 +173,7 @@ class App extends Component {
           <div className="deck-section">
             <div className="face-down-deck" onClick={this.drawCard} />
             <div className="drawn-card-section">
-              {this.createCardsView(this.state.lastDrawnCard, 'deck')}
+              {this.createCardsView(this.state.drawnCards, 'deck')}
             </div>
           </div>
 
