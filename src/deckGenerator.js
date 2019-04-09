@@ -4,9 +4,19 @@ const HEART = '&#9829;';
 const DIAMOND = '&#9830;';
 
 const createCard = function(suit, value) {
+  const rankMap = {
+    A: 1,
+    J: 11,
+    Q: 12,
+    K: 13
+  };
+
   let color = 'black-card';
   if (suit === HEART || suit === DIAMOND) color = 'red-card';
-  return { value, suit, color, display: false, key: `${suit}-${value}` };
+
+  let rank = value;
+  if (isNaN(rank)) rank = rankMap[value];
+  return { value, suit, rank, color, display: false, key: `${suit}-${value}` };
 };
 
 const createSuitDeck = function(suit) {

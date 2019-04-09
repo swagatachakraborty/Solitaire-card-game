@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Deck from './deck';
 import Card from './card';
+import isValidDrag from './validations';
 import './App.css';
 
 const deck = new Deck();
@@ -78,7 +79,7 @@ class App extends Component {
 
   refillDeck() {
     this.setState(state => {
-      state.faceDownDeck = state.drawnCards.slice();
+      state.faceDownDeck = state.drawnCards.slice().reverse();
       state.drawnCards = [];
       return state;
     });
@@ -122,8 +123,15 @@ class App extends Component {
     const sourcePile = this.getPileByIndex(sourcePileIndex);
     const destinationPile = this.getPileByIndex(destinationPileIndex);
 
-    const sourceCard = sourcePile[sourceCardIndex];
-    if (sourceCard.display === false) return;
+    if (
+      !isValidDrag(
+        sourcePile,
+        destinationPile,
+        sourceCardIndex,
+        destinationPileIndex
+      )
+    )
+      return;
 
     this.handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex);
   }
@@ -158,13 +166,13 @@ class App extends Component {
         <div className="separator" />
 
         <div className="waste-pile-section">
-          {this.createWastePileView(0)}
-          {this.createWastePileView(1)}
-          {this.createWastePileView(2)}
-          {this.createWastePileView(3)}
-          {this.createWastePileView(4)}
-          {this.createWastePileView(5)}
-          {this.createWastePileView(6)}
+          <div className='place-holder'>{this.createWastePileView(0)}</div>
+          <div className='place-holder'>{this.createWastePileView(1)}</div>
+          <div className='place-holder'>{this.createWastePileView(2)}</div>
+          <div className='place-holder'>{this.createWastePileView(3)}</div>
+          <div className='place-holder'>{this.createWastePileView(4)}</div>
+          <div className='place-holder'>{this.createWastePileView(5)}</div>
+          <div className='place-holder'>{this.createWastePileView(6)}</div>
         </div>
       </main>
     );

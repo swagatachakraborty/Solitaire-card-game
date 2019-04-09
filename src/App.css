@@ -7,7 +7,7 @@
 
 main {
   height: 100%;
-  width: 98%;
+  width: 70%;
   margin: 0 auto;
 
   display: flex;
@@ -36,7 +36,8 @@ main {
 
 .face-down-deck,
 .drawn-card-section,
-.foundation {
+.foundation,
+.place-holder {
   width: 79px;
   height: 123px;
   padding: 7px;
