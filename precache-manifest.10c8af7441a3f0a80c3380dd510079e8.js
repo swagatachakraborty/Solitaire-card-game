@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/Solitaire-card-game/static/css/main.d6be7d05.chunk.css"
   },
   {
-    "revision": "d6eeb1c5ed63812e3f4fedc259453fd6",
+    "revision": "6234b9bc390f31f70e4ca4f595d58609",
     "url": "/Solitaire-card-game/index.html"
   }
 ];
