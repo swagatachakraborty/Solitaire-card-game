@@ -25,7 +25,7 @@ class App extends Component {
     this.createFoundationView = this.createFoundationView.bind(this);
   }
 
-  createCard(cardDetail, index, wastePileIndex = NaN) {
+  createCard(cardDetail, index, pileIndex) {
     return (
       <Card
         suit={cardDetail.suit}
@@ -34,18 +34,16 @@ class App extends Component {
         display={cardDetail.display}
         key={cardDetail.key}
         onDrag={this.removeCardFromPile}
-        wastePileIndex={wastePileIndex}
+        pileIndex={pileIndex}
         cardIndex={index}
       />
     );
   }
 
-  createCardsView(cards, wastePileIndex) {
+  createCardsView(cards, pileIndex) {
     if (cards.length === 0) return;
     cards[cards.length - 1].display = true;
-    return cards.map((card, index) =>
-      this.createCard(card, index, wastePileIndex)
-    );
+    return cards.map((card, index) => this.createCard(card, index, pileIndex));
   }
 
   createWastePileView(pileIndex) {
@@ -67,16 +65,19 @@ class App extends Component {
     return (
       <div
         className="foundation"
-        id={`foundation-${foundationIndex}`}
+        id={`foundation-f${foundationIndex}`}
         onDragOver={this.addCardToPile}
         onDrop={this.drop}
       >
-        {this.createCardsView(this.state.foundations[foundationIndex])}
+        {this.createCardsView(
+          this.state.foundations[foundationIndex],
+          'f' + foundationIndex
+        )}
       </div>
     );
   }
 
-  resetDeck() {
+  refillDeck() {
     this.setState(state => {
       state.lastDrawnCard = [];
       state.faceDownDeck = state.drawnCards.slice();
@@ -87,7 +88,7 @@ class App extends Component {
 
   drawCard() {
     if (this.state.faceDownDeck.length === 0) {
-      this.resetDeck();
+      this.refillDeck();
       return;
     }
 
@@ -110,6 +111,7 @@ class App extends Component {
     this.setState(state => {
       destinationPile.push(state.drawnCards.pop());
       state.lastDrawnCard.pop();
+
       if (state.drawnCards.length > 0) {
         state.lastDrawnCard = state.drawnCards.slice(-1);
       }
@@ -123,8 +125,7 @@ class App extends Component {
       return;
     }
 
-    const foundationIndex = destinationId.split('-').pop();
-    this.handleDragFromDeckToPile(this.state.foundations[foundationIndex]);
+    this.handleDragFromDeckToPile(destinationPile);
   }
 
   handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex) {
@@ -140,7 +141,6 @@ class App extends Component {
     const destinationPile = this.state.foundations[foundationIndex];
     this.setState(state => {
       const movedCards = sourcePile.splice(sourceCardIndex);
-      console.log(movedCards);
       movedCards.forEach(card => destinationPile.push(card));
       return state;
     });
@@ -152,10 +152,10 @@ class App extends Component {
     const [, , sourceCardIndex, sourcePileIndex] = sourceCardId.split('-');
     const destinationId = event.target.id;
     const destinationPileIndex = destinationId.split('-').pop();
-    const sourcePile = this.state.wastePiles[sourcePileIndex];
-    const destinationPile = this.state.wastePiles[destinationPileIndex];
+    const sourcePile = this.getPileByIndex(sourcePileIndex);
+    const destinationPile = this.getPileByIndex(destinationPileIndex);
 
-    if (isNaN(sourcePileIndex)) {
+    if (/deck/.test(sourcePileIndex)) {
       this.handleDragFromFaceDownDeck(destinationPile, destinationId);
       return;
     }
@@ -166,6 +166,14 @@ class App extends Component {
     this.handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex);
   }
 
+  getPileByIndex(pileIndex) {
+    if (!isNaN(pileIndex)) return this.state.wastePiles[pileIndex];
+
+    if (/deck/.test(pileIndex)) return this.state.drawnCards;
+
+    if (/f/.test(pileIndex)) return this.state.foundations[pileIndex[1]];
+  }
+
   render() {
     return (
       <main>
@@ -173,7 +181,7 @@ class App extends Component {
           <div className="deck-section">
             <div className="face-down-deck" onClick={this.drawCard} />
             <div className="drawn-card-section">
-              {this.createCardsView(this.state.lastDrawnCard)}
+              {this.createCardsView(this.state.lastDrawnCard, 'deck')}
             </div>
           </div>
 

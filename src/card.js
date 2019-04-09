@@ -8,24 +8,24 @@ class Card extends Component {
     this.index = props.cardIndex;
     this.onDrag = props.onDrag;
     this.id =
-      this.suit +
-      '-' +
-      this.value +
-      '-' +
-      this.index +
-      '-' +
-      props.wastePileIndex;
+      this.suit + '-' + this.value + '-' + this.index + '-' + props.pileIndex;
   }
 
-  getClass(props) {
-    return props.display ? props.colorClass : 'face-down';
+  getClasses(props) {
+    const class1 = props.display ? props.colorClass : 'face-down';
+    let class2 = 'waste-pile-card';
+
+    if (/f/.test(props.pileIndex)) class2 = 'foundation-card';
+    if (/deck/.test(props.pileIndex)) class2 = 'deck-card';
+
+    return class1 + ' ' + class2;
   }
 
   render() {
     return (
       <div
         id={this.id}
-        className={`card ${this.getClass(this.props)}`}
+        className={`card ${this.getClasses(this.props)}`}
         draggable={true}
         onDragStart={this.onDrag}
       >
