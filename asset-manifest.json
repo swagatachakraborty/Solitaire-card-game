@@ -1,13 +1,14 @@
 {
-  "main.css": "/Solitaire-card-game/static/css/main.42cb7beb.chunk.css",
-  "main.js": "/Solitaire-card-game/static/js/main.512cdd6d.chunk.js",
-  "main.js.map": "/Solitaire-card-game/static/js/main.512cdd6d.chunk.js.map",
+  "main.css": "/Solitaire-card-game/static/css/main.3b03e6af.chunk.css",
+  "main.js": "/Solitaire-card-game/static/js/main.207c600a.chunk.js",
+  "main.js.map": "/Solitaire-card-game/static/js/main.207c600a.chunk.js.map",
   "runtime~main.js": "/Solitaire-card-game/static/js/runtime~main.335b2b13.js",
   "runtime~main.js.map": "/Solitaire-card-game/static/js/runtime~main.335b2b13.js.map",
-  "static/js/2.409743f3.chunk.js": "/Solitaire-card-game/static/js/2.409743f3.chunk.js",
-  "static/js/2.409743f3.chunk.js.map": "/Solitaire-card-game/static/js/2.409743f3.chunk.js.map",
+  "static/js/2.a976ec15.chunk.js": "/Solitaire-card-game/static/js/2.a976ec15.chunk.js",
+  "static/js/2.a976ec15.chunk.js.map": "/Solitaire-card-game/static/js/2.a976ec15.chunk.js.map",
   "index.html": "/Solitaire-card-game/index.html",
-  "precache-manifest.45dfa03994ca39d139f1e2cfab1226bd.js": "/Solitaire-card-game/precache-manifest.45dfa03994ca39d139f1e2cfab1226bd.js",
+  "precache-manifest.40bc5116bc02d25270ba7f25b20b24ab.js": "/Solitaire-card-game/precache-manifest.40bc5116bc02d25270ba7f25b20b24ab.js",
   "service-worker.js": "/Solitaire-card-game/service-worker.js",
-  "static/css/main.42cb7beb.chunk.css.map": "/Solitaire-card-game/static/css/main.42cb7beb.chunk.css.map"
+  "static/css/main.3b03e6af.chunk.css.map": "/Solitaire-card-game/static/css/main.3b03e6af.chunk.css.map",
+  "static/media/congratulations.png": "/Solitaire-card-game/static/media/congratulations.65335b1c.png"
 }
