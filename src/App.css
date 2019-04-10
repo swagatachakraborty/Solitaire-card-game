@@ -134,8 +134,15 @@ main {
 }
 
 .end-game {
-  font-family: inherit;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   text-align: center;
+  font-size: 18px;
+}
+
+.end-game img {
+  height: 300px;
+  width: 500px;
 }
 
 .btn {

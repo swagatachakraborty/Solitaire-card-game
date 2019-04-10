@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Deck from './deck';
 import Card from './card';
 import isValidDrag from './validations';
+import greeting from './media/congratulations.png';
 import './App.css';
 
 const deck = new Deck();
@@ -168,8 +169,11 @@ class App extends Component {
       return (
         <main>
           <div className="end-game">
-            <h1>Congratulations !!!</h1>
-            <p>You took {this.timer / 60} minutes to finish the game.</p>
+            <img src={greeting} alt="Congratulations !!!" />
+            <h1>Nice !!!</h1>
+            <p>
+              You took {Math.round(this.timer / 60)} minutes to finish the game.
+            </p>
             <p>Wanna play again ?</p>
             <h3>
               <a
