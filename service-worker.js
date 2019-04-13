@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Solitaire-card-game/precache-manifest.40bc5116bc02d25270ba7f25b20b24ab.js"
+  "/Solitaire-card-game/precache-manifest.8dd9782f00b25a7626157e49e6f51a7c.js"
 );
 
 workbox.clientsClaim();

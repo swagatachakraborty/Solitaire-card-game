@@ -8,19 +8,19 @@ self.__precacheManifest = [
     "url": "/Solitaire-card-game/static/js/runtime~main.335b2b13.js"
   },
   {
-    "revision": "93ab55667aac15163283",
-    "url": "/Solitaire-card-game/static/js/main.207c600a.chunk.js"
+    "revision": "c319a29b1af51f1e22f3",
+    "url": "/Solitaire-card-game/static/js/main.5f00635b.chunk.js"
   },
   {
-    "revision": "90dd196f9f64c491cc88",
-    "url": "/Solitaire-card-game/static/js/2.a976ec15.chunk.js"
+    "revision": "c8ee365af6a030d45685",
+    "url": "/Solitaire-card-game/static/js/2.5e4d1ae3.chunk.js"
   },
   {
-    "revision": "93ab55667aac15163283",
+    "revision": "c319a29b1af51f1e22f3",
     "url": "/Solitaire-card-game/static/css/main.3b03e6af.chunk.css"
   },
   {
-    "revision": "87e55ead2141625260e86a0059c72b81",
+    "revision": "647b252bcc0a327b2dd6019b8e3c52c1",
     "url": "/Solitaire-card-game/index.html"
   }
 ];
