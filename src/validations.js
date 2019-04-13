@@ -36,4 +36,22 @@ const isValidDrag = function(
   return validateDragToWastePile(sourceCard, destinationCard);
 };
 
-export default isValidDrag;
+const isValidDoubleClick = function(foundations, sourceSuit, sourceRank) {
+  let destinationPileIndex = '';
+
+  foundations.forEach((foundation, index) => {
+    if (foundation.length === 0) {
+      if (sourceRank == 1) destinationPileIndex = 'f' + index;
+      return;
+    }
+
+    const { suit, rank } = foundation[foundation.length - 1];
+
+    if (suit === sourceSuit && rank == sourceRank - 1)
+      destinationPileIndex = 'f' + index;
+  });
+
+  return destinationPileIndex;
+};
+
+export { isValidDrag, isValidDoubleClick };

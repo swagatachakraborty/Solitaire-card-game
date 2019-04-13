@@ -5,10 +5,12 @@ class Card extends Component {
     super(props);
     this.suit = props.suit;
     this.value = props.value;
+    this.rank = props.rank;
     this.index = props.cardIndex;
     this.onDrag = props.onDrag;
+    this.onDblClick = props.onDblClick;
     this.id =
-      this.suit + '-' + this.value + '-' + this.index + '-' + props.pileIndex;
+      this.suit + '-' + this.rank + '-' + this.index + '-' + props.pileIndex;
   }
 
   getClasses(props) {
@@ -54,6 +56,7 @@ class Card extends Component {
         className={`card ${this.getClasses(this.props)}`}
         draggable={true}
         onDragStart={this.onDrag}
+        onDoubleClick={this.onDblClick}
       >
         {this.getCardHeaderView()}
         {this.getCardCenterView()}

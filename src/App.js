@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Deck from './deck';
 import Card from './card';
-import isValidDrag from './validations';
+import { isValidDrag, isValidDoubleClick } from './validations';
 import greeting from './media/congratulations.png';
 import './App.css';
 
@@ -26,6 +26,7 @@ class App extends Component {
     this.createCardsView = this.createCardsView.bind(this);
     this.drawCard = this.drawCard.bind(this);
     this.createFoundationView = this.createFoundationView.bind(this);
+    this.addCardToFoundation = this.addCardToFoundation.bind(this);
 
     this.startGame();
   }
@@ -35,10 +36,12 @@ class App extends Component {
       <Card
         suit={cardDetail.suit}
         value={cardDetail.value}
+        rank={cardDetail.rank}
         colorClass={cardDetail.color}
         display={cardDetail.display}
         key={cardDetail.key}
         onDrag={this.removeCardFromPile}
+        onDblClick={this.addCardToFoundation}
         pileIndex={pileIndex}
         cardIndex={index}
       />
@@ -108,6 +111,27 @@ class App extends Component {
 
   addCardToPile(event) {
     event.preventDefault();
+  }
+
+  addCardToFoundation(event) {
+    const [
+      sourceSuit,
+      sourceRank,
+      sourceCardIndex,
+      sourcePileIndex
+    ] = event.target.id.split('-');
+
+    const destinationPileIndex = isValidDoubleClick(
+      this.state.foundations,
+      sourceSuit,
+      sourceRank
+    );
+
+    if (!destinationPileIndex) return;
+
+    const destinationPile = this.getPileByIndex(destinationPileIndex);
+    const sourcePile = this.getPileByIndex(sourcePileIndex);
+    this.handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex);
   }
 
   handleDragAcrossPiles(sourcePile, destinationPile, sourceCardIndex) {
